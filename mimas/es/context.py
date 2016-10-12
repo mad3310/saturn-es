@@ -5,26 +5,34 @@ class ElasticsearchContext(object):
 
     def __init__(self, **config):
         assert config.get('APP')
-        assert config.get('ELASTICSEARCH_SERVER')
+        assert config.get('ELASTICSEARCH_SERVERS')
         self.config = config
 
+# 注释原因：目前线上部署还不支持.env环境变量自动导入
+# def get_by_env_prefix(app_name):
+#     mod = __import__('envcfg.json.%s' % app_name,
+#                      fromlist=[app_name])
+#     config = vars(mod)
+#     return config
 
-def get_by_env_prefix(name):
-    mod = __import__('envcfg.json.%s' % name,
-                     fromlist=[name])
-    config = vars(mod)
-    return config
 
-
-def init_context(app_config_prefix_name, server=None):
+def init_context(app_name, servers=None):
     develop_mode = True
-    name = app_config_prefix_name
 
-    config = get_by_env_prefix(name)
-    elasticsearch_server = server or config.get('ELASTICSEARCH_SERVER')
-    if not elasticsearch_server:
+    # 注释原因：目前线上部署还不支持.env环境变量自动导入
+    # config = get_by_env_prefix(app_name)
+    # if config:
+    #     hosts_str = config.get('ELASTICSEARCH_SERVERS')
+    #     hosts = map(lambda x: dict(host=x.split(':')[0], port=x.split(':')[1]),
+    #                 hosts_str.split(','),)
+
+    if servers:
+        hosts = map(lambda x: dict(host=x.split(':')[0], port=x.split(':')[1]),
+                    servers.split(','),)
+
+    if not hosts:
         raise Exception('ELASTICSEARCH_SERVER should not be empty.')
 
-    return ElasticsearchContext(APP=app_config_prefix_name,
+    return ElasticsearchContext(APP=app_name,
                                 DEVELOP_MODE=develop_mode,
-                                ELASTICSEARCH_SERVER=elasticsearch_server)
+                                ELASTICSEARCH_SERVERS=hosts)
