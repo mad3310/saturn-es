@@ -1,41 +1,47 @@
 # -*- coding: utf-8 -*-
 
-import threading
-import Elasticsearch
+import logging
+
+from elasticsearch import Elasticsearch
 
 
 class ElasticsearchsEngine(object):
-
     """
     ElasticSearch Engine
     """
 
-    def __init__(self, context, retry=1):
+    def __init__(self, context=None):
         self.context = context
-        self.retry = retry
-        self.lock = threading.Lock()
+        self.es = None
 
     def __repr__(self):
-        return '<Elasticsearch Engine server=%s>' % self.url
+        return '<Elasticsearch Engine server=%s>' % self.hosts
 
     def connect(self):
-        # 获取elasticsearch实例
-        host = self.context.config.get('ELASTICSEARCH_HOST')
-        server = Elasticsearch(host)
-        return server
+        es_hosts = self.context.config.get('ELASTICSEARCH_HOSTS')
+        self.hosts = map(lambda x: dict(host=x.split(':')[0],
+                                        port=x.split(':')[1]),
+                         es_hosts.split(','),
+                         )
+        print self.hosts
+        self.es = Elasticsearch(
+            self.hosts,
+            sniff_on_start=False,
+            sniff_on_connection_fail=True,
+            sniffer_timeout=300,
+            sniff_timeout=10,
+        )
+        return self.es
 
-    def search(self):
-        # 搜索
-        pass
+    def add(self, index, doc_type, body, doc_id=None):
+        try:
+            return self.es.index(index=index, doc_type=doc_type,
+                                 body=body, id=doc_id)
+        except Exception as e:
+            logging.error(e, exc_info=True)
 
-    def get(self):
-        # 获取索引
-        pass
-
-    def add(self):
-        # 添加索引
-        pass
-
-    def delete(self):
-        # 删除索引
-        pass
+    def delete(self, index, doc_type, doc_id):
+        try:
+            self.es.delete(index=index, doc_type=doc_type, id=doc_id)
+        except Exception as e:
+            logging.error(e, exc_info=True)
