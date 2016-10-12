@@ -8,9 +8,9 @@ source_type: dir
 target_type: rpm
 
 # 软件包名
-name: es_pack 
+name: saturn-es
 # 软件包版本号
-version: 0.0.2
+version: 0.0.1
 dependencies:
     - python-elasticsearch
 # 软件包发型序号，即相同版本号（version）的代码这是第几次打包发型
@@ -28,9 +28,9 @@ category: GCP
 description: |
     es_pack is a tool for record and query things in es.
 # 软件包项目主页
-url: http://git.letv.cn/liujinliu/elasticsearch_pack.git
+url: http://git.letv.cn/saturn/saturn-es
 # 软件包维护人员
-maintainor: liujinliu@le.com
+maintainor: chenwenquan@le.com
 # 软件包供应商名称
 vendor: LeCloud
 

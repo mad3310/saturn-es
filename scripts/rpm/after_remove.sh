@@ -1,3 +1,3 @@
 #!/bin/bash
-rm -rf /tmp/es_pack
+rm -rf /tmp/saturn-es
 exit 0
