@@ -21,7 +21,9 @@ setup(
     include_package_data=True,
     zip_safe=False,
     install_requires=[
+        'python-envcfg>=0.1.0',
         'elasticsearch==2.4.0',
+        'dsnparse>=0.1.3',
     ],
     classifiers=['Private :: Do Not Upload'],
 )
