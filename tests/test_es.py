@@ -3,6 +3,7 @@
 __import__('framework').init()
 
 import unittest
+from datetime import datetime
 
 from mimas.es.context import init_context
 from mimas.es import ElasticsearchEngine
@@ -26,7 +27,13 @@ class EsEngineTest(unittest.TestCase):
         assert engine
         assert engine.hosts
 
-        result = engine.add("test_index", "test_type", "test_doc")
+        doc = {
+            'author': 'kimchy',
+            'text': 'Elasticsearch: cool. bonsai cool.',
+            'timestamp': datetime.now(),
+        }
+
+        result = engine.add("test_index", "tweet", doc)
         self.assertEqual(True, result.get('created'))
 
 if __name__ == '__main__':

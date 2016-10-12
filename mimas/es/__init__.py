@@ -30,15 +30,15 @@ class ElasticsearchEngine(object):
         self.engine = engine
         return engine
 
-    def add(self, index, doc_type, body):
+    def add(self, index, doc_type, body, doc_id=None):
         if not self.engine:
             engine = self.connect()
-        return engine.create(index=index, doc_type=doc_type, body=body)
+            return engine.index(index=index, doc_type=doc_type, id=doc_id, body=body)
 
     def delete(self, index, doc_type, doc_id):
         if not self.engine:
             engine = self.connect()
-        engine.delete(index=index, doc_type=doc_type, id=doc_id)
+            engine.delete(index=index, doc_type=doc_type, id=doc_id)
 
     @classmethod
     def init_by_context(cls, context):
