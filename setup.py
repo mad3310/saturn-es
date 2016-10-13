@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from setuptools import setup, find_packages
+from distutils.core import setup
 
 install_description = '''
 saturn es
@@ -17,7 +17,7 @@ setup(
     long_description=install_description,
     author='wangyiyang',
     author_email='wangyiyang@le.com',
-    packages=find_packages(exclude=['ez_setup', 'examples', 'tests']),
+    packages=['mimas'],
     include_package_data=True,
     zip_safe=False,
     install_requires=[
