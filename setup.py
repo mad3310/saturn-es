@@ -12,7 +12,7 @@ Python library for saturn elasticsearch
 setup(
     name='saturn-es',
     version='0.0.1',
-    packages=['mimas'],
+    packages=['mimas', 'mimas.es'],
     author='letv gcp',
     author_email='liujinliu@le.com',
     description='pack elastic operation',
