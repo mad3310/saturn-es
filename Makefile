@@ -16,3 +16,8 @@ upload:
 		devpi upload dist/*
 		pip uninstall saturn-es
 .PHONY: upload
+
+rpm: build
+	mkdir -p scripts/rpm/build/tmp/saturn-es && \cp -f dist/*.tar.gz scripts/rpm/build/tmp/saturn-es
+	cd scripts/rpm && mkdir -p rpms && python build_rpm.py
+.PHONY: rpm
