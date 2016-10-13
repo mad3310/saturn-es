@@ -36,5 +36,8 @@ class EsEngineTest(unittest.TestCase):
         result = engine.add("test_index", "tweet", doc)
         self.assertEqual(True, result.get('created'))
 
+        result = engine.add("test_indexs", "tweetd", doc)
+        self.assertEqual(True, result.get('created'))
+
 if __name__ == '__main__':
     unittest.main()
