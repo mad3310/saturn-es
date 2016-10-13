@@ -26,7 +26,7 @@ after_remove: after_remove.sh
 category: GCP
 # 软件包描述
 description: |
-    es_pack is a tool for record and query things in es.
+    saturn-es is a tool for record and query things in es.
 # 软件包项目主页
 url: http://git.letv.cn/saturn/saturn-es
 # 软件包维护人员
