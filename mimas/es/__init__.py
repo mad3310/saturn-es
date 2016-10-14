@@ -3,7 +3,7 @@
 from elasticsearch import Elasticsearch
 
 SNIFFER_TIMEOUT = 300
-SNIFF_TIMEOUT = 10
+SNIFF_TIMEOUT = 20
 
 
 class ElasticsearchEngine(object):
