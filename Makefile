@@ -7,7 +7,7 @@ build: clean
 .PHONY: build
 
 clean:
-		rm -rf dist build *.egg-info
+		rm -rf dist build *.egg-info .cache
 .PHONY: clean
 
 upload:
