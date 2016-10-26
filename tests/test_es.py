@@ -10,7 +10,19 @@ from mimas.es import ElasticsearchEngine
 
 
 APP = 'saturn'
-SERVERS = '10.154.255.131:9200,10.154.255.242:9200,10.154.255.90:9200'
+SERVERS = ""
+
+INDEX_BODY = {
+    "mappings": {
+        "tweet": {
+            "properties": {
+                "author": {"type": "string", "index": "not_analyzed"},
+                "text": {"type": "string", "index": "not_analyzed"},
+                "timestamp": {"type": "date", "index": "not_analyzed"}
+            }
+        }
+    }
+}
 
 
 class EsEngineTest(unittest.TestCase):
@@ -27,17 +39,20 @@ class EsEngineTest(unittest.TestCase):
         assert engine
         assert engine.hosts
 
+        if not engine.exists_index('test'):
+            result = engine.create_index("test", body=INDEX_BODY)
+
         doc = {
             'author': 'kimchy',
             'text': 'Elasticsearch: cool. bonsai cool.',
             'timestamp': datetime.now(),
         }
 
-        result = engine.add("test_index", "tweet", doc)
+        result = engine.add("test", "tweet", doc)
         self.assertEqual(True, result.get('created'))
 
-        result = engine.add("test_indexs", "tweetd", doc)
+        result = engine.add("test", "facebook", doc)
         self.assertEqual(True, result.get('created'))
 
-if __name__ == '__main__':
-    unittest.main()
+        r = engine.exists_index('test')
+        assert r

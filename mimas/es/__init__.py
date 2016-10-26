@@ -27,18 +27,32 @@ class ElasticsearchEngine(object):
                 )
             except:
                 raise
-        self.engine = engine
-        return engine
+            self.engine = engine
+            return engine
 
     def add(self, index, doc_type, body, doc_id=None):
+        """添加文档"""
         if not self.engine:
             self.connect()
         return self.engine.index(index=index, doc_type=doc_type, id=doc_id, body=body)
 
     def delete(self, index, doc_type, doc_id):
+        """删除文档"""
         if not self.engine:
             self.connect()
-        self.engine.delete(index=index, doc_type=doc_type, id=doc_id)
+        return self.engine.delete(index=index, doc_type=doc_type, id=doc_id)
+
+    def create_index(self, index, body=None):
+        """创建索引库"""
+        if not self.engine:
+            self.connect()
+        return self.engine.indices.create(index, body=body)
+
+    def exists_index(self, index):
+        """是否存在索引库"""
+        if not self.engine:
+            self.connect()
+        return self.engine.indices.exists(index)
 
     @classmethod
     def init_by_context(cls, context):
