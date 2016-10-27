@@ -12,16 +12,23 @@ from mimas.es import ElasticsearchEngine
 APP = 'saturn'
 SERVERS = ""
 
-INDEX_BODY = {
-    "mappings": {
-        "tweet": {
-            "properties": {
-                "author": {"type": "string", "index": "not_analyzed"},
-                "text": {"type": "string", "index": "not_analyzed"},
-                "timestamp": {"type": "date", "index": "not_analyzed"}
-            }
+MAPPING = {
+    "tweet": {
+        "properties": {
+            "author": {"type": "string", "index": "not_analyzed"},
+            "text": {"type": "string", "index": "not_analyzed"},
+            "timestamp": {"type": "date", "index": "not_analyzed"}
         }
     }
+}
+
+INDEX_BODY = {
+    "mappings": MAPPING,
+}
+
+TEMPLATE = {
+    "template": "te*",
+    "mappings": MAPPING,
 }
 
 
@@ -39,13 +46,14 @@ class EsEngineTest(unittest.TestCase):
         assert engine
         assert engine.hosts
 
-        if not engine.exists_index('test'):
-            result = engine.create_index("test", body=INDEX_BODY)
+        r = engine.put_template('mcluster_satus', TEMPLATE)
+        r = engine.exists_template('mcluster_satus')
+        assert r
 
         doc = {
             'author': 'kimchy',
             'text': 'Elasticsearch: cool. bonsai cool.',
-            'timestamp': datetime.now(),
+            'timestamp': datetime.now()
         }
 
         result = engine.add("test", "tweet", doc)
@@ -54,5 +62,5 @@ class EsEngineTest(unittest.TestCase):
         result = engine.add("test", "facebook", doc)
         self.assertEqual(True, result.get('created'))
 
-        r = engine.exists_index('test')
-        assert r
+        result = engine.add("tessss", "tweet", doc)
+        self.assertEqual(True, result.get('created'))

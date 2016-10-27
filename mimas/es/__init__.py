@@ -42,17 +42,17 @@ class ElasticsearchEngine(object):
             self.connect()
         return self.engine.delete(index=index, doc_type=doc_type, id=doc_id)
 
-    def create_index(self, index, body=None):
-        """创建索引库"""
+    def put_template(self, name, body):
+        """创建索引库模板"""
         if not self.engine:
             self.connect()
-        return self.engine.indices.create(index, body=body)
+        return self.engine.indices.put_template(name, body)
 
-    def exists_index(self, index):
-        """是否存在索引库"""
+    def exists_template(self, name):
+        """是否存在索引库模板"""
         if not self.engine:
             self.connect()
-        return self.engine.indices.exists(index)
+        return self.engine.indices.exists_template(name)
 
     @classmethod
     def init_by_context(cls, context):
