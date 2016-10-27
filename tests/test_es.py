@@ -47,6 +47,7 @@ class EsEngineTest(unittest.TestCase):
         assert engine.hosts
 
         r = engine.put_template('mcluster_satus', TEMPLATE)
+        assert r.get('acknowledged')
         r = engine.exists_template('mcluster_satus')
         assert r
 
