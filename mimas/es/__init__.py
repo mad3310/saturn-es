@@ -34,7 +34,8 @@ class ElasticsearchEngine(object):
         """添加文档"""
         if not self.engine:
             self.connect()
-        return self.engine.index(index=index, doc_type=doc_type, id=doc_id, body=body)
+        return self.engine.index(index=index, doc_type=doc_type,
+                                 id=doc_id, body=body)
 
     def delete(self, index, doc_type, doc_id):
         """删除文档"""
@@ -57,3 +58,13 @@ class ElasticsearchEngine(object):
     @classmethod
     def init_by_context(cls, context):
         return ElasticsearchEngine(context)
+
+    def get_stats(self):
+        if not self.engine:
+            self.connect()
+        return self.engine.cluster.stats()
+
+    def get_health(self):
+        if not self.engine:
+            self.connect()
+        return self.engine.cluster.health()
