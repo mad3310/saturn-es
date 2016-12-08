@@ -12,7 +12,7 @@ name: saturn-es
 # 软件包版本号
 version: 0.0.3
 dependencies:
-    - python-elasticsearch
+    - python-elasticsearch == 2.4.0
 # 软件包发型序号，即相同版本号（version）的代码这是第几次打包发型
 release: 1
 
